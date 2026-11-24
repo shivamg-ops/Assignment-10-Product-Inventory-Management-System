@@ -1,0 +1,6 @@
+2026-11-24 21:58:35 [INFO] calculate_total_price called with price=49.99, quantity=3
+2026-11-24 21:58:35 [INFO] Successfully calculated total price: 149.97
+2026-11-24 21:58:35 [INFO] apply_discount called with total=149.97, discount_percent=10
+2026-11-24 21:58:35 [INFO] Successfully applied discount: final amount=134.97
+2026-11-24 21:58:35 [INFO] check_stock called with available_stock=25, requested_quantity=5
+2026-11-24 21:58:35 [INFO] Stock check PASSED: requested 5 is available (stock: 25)
