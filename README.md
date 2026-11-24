@@ -1,12 +1,26 @@
 # Assignment 10 – Product Inventory Management System
 
-A Python program to manage inventory calculations, input validations, logging, and unit testing.
+---
+
+## 📌 Student & Course Details
+
+- **Student Name:** Shivam
+- **Course:** Python Programming
+- **Topic:** Assignment 10 – Product Inventory Management System
+- **Repository:** [Assignment-10-Product-Inventory-Management-System](https://github.com/shivamg-ops/Assignment-10-Product-Inventory-Management-System)
+- **Environment:** macOS / Python 3.10+
+
+---
+
+## 📖 Project Overview
+
+This project is a simple and reliable **Product Inventory Management System** written in Python. It handles product calculations, stock validation, logging, and error handling. It is fully tested with `pytest` and formatted using `Ruff`.
 
 ---
 
 ## 🏗️ System Flow & Architecture
 
-### Simple Architecture Diagram
+### Simple Architecture
 ```mermaid
 graph LR
     User[User / Input] --> Main[inventory.py]
@@ -33,14 +47,30 @@ flowchart TD
 
 ---
 
-## 📋 Features
+## 📋 Features Implemented
 
-1. **`calculate_total_price(price, quantity)`**: Calculates total price (`price * quantity`).
-2. **`apply_discount(total, discount_percent)`**: Calculates discounted price.
-3. **`check_stock(available_stock, requested_quantity)`**: Checks stock availability (`True` / `False`).
-4. **Exception Handling**: Rejects invalid types (`TypeError`) and negative/out-of-range values (`ValueError`).
-5. **Logging**: Logs operations, warnings, and errors to `application.log`.
-6. **Unit Tests & Code Quality**: Tested with `pytest` (12 tests) and formatted with `Ruff`.
+1. **`calculate_total_price(price, quantity)`**
+   - Calculates the total cost (`price * quantity`).
+   - Validates that price and quantity are positive numbers.
+   - Raises `ValueError` for negative values and `TypeError` for invalid data types.
+
+2. **`apply_discount(total, discount_percent)`**
+   - Applies discount percentage to the total amount.
+   - Validates that discount is between `0%` and `100%`.
+   - Raises `ValueError` if discount is outside this range.
+
+3. **`check_stock(available_stock, requested_quantity)`**
+   - Checks if sufficient stock is available.
+   - Returns `True` if stock is available, otherwise `False`.
+   - Logs a warning if stock is insufficient.
+
+4. **Exception Handling & Logging**
+   - Catches invalid inputs with proper exceptions (`TypeError`, `ValueError`).
+   - Saves all operations, errors, and warnings into `application.log`.
+
+5. **Testing & Code Quality**
+   - Tested using **pytest** with 12 unit tests covering all valid and edge cases.
+   - Formatted and linted using **Ruff** for clean code quality.
 
 ---
 
@@ -49,7 +79,7 @@ flowchart TD
 ### 1. Pytest Test Results
 ![Pytest](sreenshots/1.%20Pytest.png)
 
-### 2. Ruff Checks
+### 2. Ruff Quality & Format Checks
 ![Ruff Check 1](sreenshots/2.%20Ruff%20Checks.png)
 
 ![Ruff Check 2](sreenshots/2.1.%20ruff%20check.png)
@@ -60,12 +90,12 @@ flowchart TD
 
 ```text
 product-inventory-management/
-├── .gitignore
-├── README.md
-├── application.log
-├── inventory.py
-├── test_inventory.py
-└── sreenshots/
+├── .gitignore             # Ignores .venv and cache files
+├── README.md              # Project documentation
+├── application.log        # Generated log file
+├── inventory.py           # Main inventory logic
+├── test_inventory.py      # Unit tests
+└── sreenshots/            # Verification screenshots
     ├── 1. Pytest.png
     ├── 2. Ruff Checks.png
     └── 2.1. ruff check.png
@@ -73,26 +103,36 @@ product-inventory-management/
 
 ---
 
-## 💻 Setup & Run (macOS)
+## 💻 Setup & Run Instructions (macOS)
 
-### 1. Setup Environment
+### 1. Create Virtual Environment
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
+```
+
+### 2. Install Required Packages
+```bash
 pip install pytest ruff
 ```
 
-### 2. Run Application
+### 3. Run the Program
 ```bash
 python3 inventory.py
 ```
+**Output:**
+```text
+Total Price: 150.0
+After Discount: 135.0
+Stock Available: True
+```
 
-### 3. Run Tests
+### 4. Run Unit Tests
 ```bash
 pytest -v
 ```
 
-### 4. Run Ruff Checks
+### 5. Run Ruff Linting & Formatting
 ```bash
 ruff check .
 ruff format --check .
