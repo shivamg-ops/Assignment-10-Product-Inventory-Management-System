@@ -4,7 +4,8 @@
 
 ## 📌 Student & Course Details
 
-- **Student Name:** Shivam
+- **Student Name:** Shivam Gupta
+- **Roll No:** 29
 - **Course:** Python Programming
 - **Topic:** Assignment 10 – Product Inventory Management System
 - **Repository:** [Assignment-10-Product-Inventory-Management-System](https://github.com/shivamg-ops/Assignment-10-Product-Inventory-Management-System)
