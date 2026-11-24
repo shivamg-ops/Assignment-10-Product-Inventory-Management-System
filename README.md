@@ -6,79 +6,82 @@ A Python-based Product Inventory Management System designed to handle core inven
 
 ## 🏗️ System Architecture & End-to-End Flow
 
-### 1. High-Level Architecture
+### 1. High-Level Architecture Diagram
 ```mermaid
-flowchart TD
-    subgraph Client / User Layer
-        CLI[Main Execution / Client Input]
-        Tests[Pytest Test Suite]
+graph TD
+    A["👤 User / CLI / Pytest Runner"] --> B["⚙️ inventory.py (Core Controller)"]
+
+    subgraph Operations ["Core Functional Modules"]
+        C1["calculate_total_price(price, qty)"]
+        C2["apply_discount(total, discount_percent)"]
+        C3["check_stock(available_stock, requested_qty)"]
     end
 
-    subgraph Business Logic Layer [inventory.py]
-        direction TB
-        CalcTotal["calculate_total_price(price, quantity)"]
-        ApplyDisc["apply_discount(total, discount_percent)"]
-        StockCheck["check_stock(available_stock, requested_quantity)"]
+    B --> C1
+    B --> C2
+    B --> C3
+
+    subgraph Validation ["Validation & Error Handling"]
+        V1{"Type & Boundary Check"}
+        E1["❌ Raise TypeError"]
+        E2["❌ Raise ValueError"]
     end
 
-    subgraph Validation & Exception Layer
-        TypeCheck{Type Validation}
-        RangeCheck{Value / Boundary Validation}
-        TypeErr[Raise TypeError]
-        ValErr[Raise ValueError]
+    C1 --> V1
+    C2 --> V1
+    C3 --> V1
+
+    V1 -- "Invalid Type" --> E1
+    V1 -- "Negative / Out of Range" --> E2
+
+    subgraph Logging_System ["Logging & Output"]
+        L["📝 Python Logging Module"]
+        F[("📄 application.log")]
+        R["✅ Successful Output / Return Value"]
     end
 
-    subgraph Output & Observability Layer
-        LogModule[(Python Logging)]
-        AppLog[application.log]
-        Result[Valid Output / Return Value]
-    end
-
-    CLI --> CalcTotal & ApplyDisc & StockCheck
-    Tests --> CalcTotal & ApplyDisc & StockCheck
-
-    CalcTotal --> TypeCheck
-    ApplyDisc --> TypeCheck
-    StockCheck --> TypeCheck
-
-    TypeCheck -- Invalid Type --> TypeErr --> LogModule
-    TypeCheck -- Valid Type --> RangeCheck
-
-    RangeCheck -- Invalid Value --> ValErr --> LogModule
-    RangeCheck -- Valid Value --> Result --> LogModule
-
-    LogModule --> AppLog
+    V1 -- "Valid" --> R
+    E1 --> L
+    E2 --> L
+    R --> L
+    L --> F
 ```
 
 ---
 
-### 2. End-to-End Workflow Diagram
+### 2. End-to-End Execution Flowchart
 ```mermaid
-sequenceDiagram
-    autonumber
-    actor User as User / Pytest Runner
-    participant Core as inventory.py
-    participant Val as Input Validator
-    participant Log as Logger (application.log)
+flowchart TD
+    Start(["🚀 Start Execution"]) --> Input["📥 Receive Input Parameters"]
+    Input --> CheckType{"Is Data Type Valid?"}
 
-    User->>Core: Request Operation (e.g. calculate_total_price)
-    Core->>Val: Check data types (int/float, non-bool)
-    alt Invalid Data Type
-        Val-->>Core: Type mismatch detected
-        Core->>Log: log.error("Invalid type...")
-        Core-->>User: Raise TypeError
-    else Valid Data Type
-        Core->>Val: Check values (non-negative, range limits)
-        alt Invalid Value Range
-            Val-->>Core: Value out of bounds
-            Core->>Log: log.error("Negative/Invalid value...")
-            Core-->>User: Raise ValueError
-        else Valid Value Range
-            Core->>Core: Compute formula (Price / Discount / Stock)
-            Core->>Log: log.info("Operation successful...")
-            Core-->>User: Return computed result
-        end
-    end
+    CheckType -- "No" --> LogTypeErr["📝 Log Error: Invalid Type"]
+    LogTypeErr --> RaiseTypeErr["❌ Raise TypeError"]
+    RaiseTypeErr --> EndFail(["⛔ Termination with Exception"])
+
+    CheckType -- "Yes" --> CheckRange{"Are Values Non-Negative & In Range?"}
+
+    CheckRange -- "No" --> LogRangeErr["📝 Log Error: Value out of bounds"]
+    LogRangeErr --> RaiseValErr["❌ Raise ValueError"]
+    RaiseValErr --> EndFail
+
+    CheckRange -- "Yes" --> ProcessOp{"Select Operation"}
+
+    ProcessOp -- "Total Price" --> CalcTotal["Compute: Price × Quantity"]
+    ProcessOp -- "Apply Discount" --> CalcDisc["Compute: Total - (Total × Discount%) / 100"]
+    ProcessOp -- "Check Stock" --> CalcStock{"Is Requested Qty <= Available Stock?"}
+
+    CalcStock -- "Yes" --> StockPass["Set Result = True"]
+    CalcStock -- "No" --> StockFail["📝 Log Warning: Insufficient Stock<br/>Set Result = False"]
+
+    CalcTotal --> LogSuccess["📝 Log Info: Operation Successful"]
+    CalcDisc --> LogSuccess
+    StockPass --> LogSuccess
+    StockFail --> LogSuccess
+
+    LogSuccess --> WriteLog[("📄 Write to application.log")]
+    WriteLog --> ReturnOutput["📤 Return Final Result"]
+    ReturnOutput --> EndSuccess(["🏁 Finish Execution"])
 ```
 
 ---
@@ -98,7 +101,7 @@ sequenceDiagram
 3. **Stock Availability Checking (`check_stock`)**:
    - Checks if inventory can fulfill requested quantity.
    - Returns boolean (`True` / `False`).
-   - Ensures requested quantity is positive ($> 0$) and available stock is non-negative ($\ge 0$).
+   - Ensures requested quantity is positive (> 0) and available stock is non-negative (>= 0).
    - Records warnings when stock is insufficient.
 
 4. **Logging System**:
@@ -115,13 +118,21 @@ sequenceDiagram
 
 ### 1. Pytest Test Suite Execution
 All unit tests executed and passed successfully across all functions:
-![Pytest Execution](sreenshots/1.%20Pytest.png)
+
+<p align="center">
+  <img src="sreenshots/1.%20Pytest.png" alt="Pytest Execution" width="850">
+</p>
 
 ### 2. Ruff Quality Checks & Formatting
 Ruff code analysis and format checks passing cleanly:
-![Ruff Checks](sreenshots/2.%20Ruff%20Checks.png)
 
-![Ruff Check Verification](sreenshots/2.1.%20ruff%20check.png)
+<p align="center">
+  <img src="sreenshots/2.%20Ruff%20Checks.png" alt="Ruff Checks" width="850">
+</p>
+
+<p align="center">
+  <img src="sreenshots/2.1.%20ruff%20check.png" alt="Ruff Check Verification" width="850">
+</p>
 
 ---
 
