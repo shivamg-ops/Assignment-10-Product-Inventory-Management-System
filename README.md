@@ -190,3 +190,4 @@ Follow these commands to push your project to GitHub:
    git remote add origin https://github.com/<your-username>/product-inventory-management.git
    git push -u origin main
    ```
+

@@ -4,3 +4,6 @@
 2026-11-24 21:58:35 [INFO] Successfully applied discount: final amount=134.97
 2026-11-24 21:58:35 [INFO] check_stock called with available_stock=25, requested_quantity=5
 2026-11-24 21:58:35 [INFO] Stock check PASSED: requested 5 is available (stock: 25)
+2026-11-24 22:05:12,799 [INFO] Total price calculated: 150.0
+2026-11-24 22:05:12,816 [INFO] Discount applied. Final price: 135.0
+2026-11-24 22:05:12,816 [INFO] Stock check passed for quantity: 3
